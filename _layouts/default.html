@@ -8,8 +8,9 @@
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
 </head>
 <body>
-  <div class="topbar" aria-hidden="true">
+  <div class="topbar">
     <a class="topbar-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <div class="shelf-title" id="shelf-title" aria-hidden="true"></div>
     <div class="dropdown">
       <button type="button" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
       <ul class="dropdown-menu">
@@ -42,13 +43,43 @@
   </footer>
   <script>
     (function () {
-      var topbar = document.querySelector('.topbar');
-      function onScroll() {
-        topbar.setAttribute('aria-hidden', window.scrollY > 80 ? 'false' : 'true');
-        document.body.classList.toggle('scrolled', window.scrollY > 80);
+      // post-title flight: mirror the h1 and ease it into the shelf centre
+      var h1 = document.querySelector('main > h1');
+      var shelf = document.getElementById('shelf-title');
+      if (h1 && shelf) {
+        var flying = document.createElement('div');
+        flying.className = 'post-title-flying';
+        flying.textContent = h1.textContent;
+        document.body.appendChild(flying);
+        shelf.textContent = h1.textContent;
+        function onScroll() {
+          var shelfRect = shelf.getBoundingClientRect();
+          var h1Rect = h1.getBoundingClientRect();
+          var denom = (h1Rect.top + window.scrollY) - (h1Rect.height) - shelfRect.bottom;
+          var progress = 1 - (h1Rect.top - shelfRect.bottom) / Math.max(1, h1Rect.height);
+          progress = Math.min(1, Math.max(0, progress));
+          if (progress > 0.02) {
+            var w0 = h1Rect.width, w1 = flying.offsetWidth || w0;
+            var scale = w0 + (w1 - w0) * progress / w0;
+            var x1 = shelfRect.left + (shelfRect.width - flying.offsetWidth) / 2;
+            var y1 = shelfRect.top + (shelfRect.height - flying.offsetHeight) / 2;
+            var x = h1Rect.left + (x1 - h1Rect.left) * progress;
+            var y = h1Rect.top + (y1 - h1Rect.top) * progress;
+            flying.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')';
+            flying.style.opacity = progress;
+            flying.classList.add('active');
+            h1.classList.add('hidden-for-flight');
+            shelf.style.visibility = 'hidden';
+          } else {
+            flying.classList.remove('active');
+            h1.classList.remove('hidden-for-flight');
+            shelf.style.visibility = 'visible';
+          }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        onScroll();
       }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
       document.querySelectorAll('.dropdown').forEach(function (d) {
         var btn = d.querySelector('button');
         btn.addEventListener('click', function () {
