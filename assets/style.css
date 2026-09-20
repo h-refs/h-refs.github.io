@@ -357,3 +357,35 @@ header .dropdown > button { font-size: 0.78rem; }
 main > h1.post-title {
   margin-top: 1rem;
 }
+
+/* ---- Option A: shelf slot swaps between site title and post title ---- */
+.topbar #shelf-swap {
+  position: relative;
+  display: inline-block;
+  min-height: 1.4em;
+}
+.topbar #shelf-swap .slot-site,
+.topbar #shelf-swap .slot-post {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  transition: opacity 0.28s ease;
+}
+.topbar #shelf-swap .slot-post {
+  opacity: 0;
+  pointer-events: none;
+}
+.topbar #shelf-swap.swapped .slot-site { opacity: 0; pointer-events: none; }
+.topbar #shelf-swap.swapped .slot-post {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (max-width: 540px) {
+  .topbar #shelf-swap .slot-post {
+    max-width: 62vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

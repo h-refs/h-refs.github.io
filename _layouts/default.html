@@ -9,8 +9,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a class="topbar-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-    <div class="shelf-title" id="shelf-title" aria-hidden="true"></div>
+    <a class="topbar-title" id="shelf-swap" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <div class="dropdown">
       <button type="button" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
       <ul class="dropdown-menu">
@@ -34,27 +33,40 @@
   </footer>
   <script>
     (function () {
+      // Option A: post title and site title share the shelf slot; tap scrolls to
+      // top of article while the post title is shown, then goes home afterwards.
+      var slot = document.getElementById('shelf-swap');
+      if (!slot) return;
       var h1 = document.querySelector('main > h1');
-      var shelf = document.getElementById('shelf-title');
-      if (h1 && shelf) {
-        shelf.textContent = h1.textContent;   // set once, always present
-        var gap0 = 1;
-        function measure() {
-          var r = h1.getBoundingClientRect();
-          gap0 = Math.max(1, (r.top + window.scrollY) - shelf.getBoundingClientRect().bottom);
+      var site = document.createElement('span');
+      site.className = 'slot-site';
+      site.textContent = {{ site.title | jsonify }};
+      var post = h1 ? (function () {
+        var s = document.createElement('span');
+        s.className = 'slot-post';
+        s.textContent = h1.textContent;
+        return s;
+      })() : null;
+      slot.textContent = '';
+      slot.appendChild(site);
+      if (post) slot.appendChild(post);
+      var swapped = false;
+      function onScroll() {
+        var show = h1 && h1.getBoundingClientRect().bottom < 56;
+        if (show !== swapped) {
+          swapped = show;
+          slot.classList.toggle('swapped', show);
         }
-        function onScroll() {
-          var r = h1.getBoundingClientRect();
-          var sr = shelf.getBoundingClientRect();
-          var p = Math.min(1, Math.max(0, 1 - (r.top - sr.bottom) / gap0));
-          h1.classList.toggle('hidden-for-flight', p > 0.18);
-          shelf.style.opacity = Math.max(0, Math.min(1, (p - 0.6) / 0.4));
-          if (p >= 0.98) h1.classList.add('hidden-for-flight');
-        }
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', function () { measure(); onScroll(); });
-        measure();
-        onScroll();
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      if (post) {
+        slot.addEventListener('click', function (e) {
+          if (swapped) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
       }
       document.querySelectorAll('.dropdown').forEach(function (d) {
         var btn = d.querySelector('button');
