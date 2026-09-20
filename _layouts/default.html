@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} — {{ site.title }}</title>
+  {% seo %}
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+</head>
+<body>
+  <div class="topbar" aria-hidden="true">
+    <a class="topbar-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <div class="dropdown">
+      <button type="button" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
+      <ul class="dropdown-menu">
+        <li><a href="{{ '/' | relative_url }}">Home</a></li>
+        <li><a href="{{ '/about' | relative_url }}">About</a></li>
+        <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+        <li><a href="https://github.com/h-refs">About me</a></li>
+      </ul>
+    </div>
+  </div>
+  <header>
+    <a class="title" href="{{ '/' | relative_url }}"><h1>{{ site.title }}</h1></a>
+    <nav>
+      <div class="dropdown">
+        <button type="button" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
+        <ul class="dropdown-menu">
+          <li><a href="{{ '/' | relative_url }}">Home</a></li>
+          <li><a href="{{ '/about' | relative_url }}">About</a></li>
+          <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+          <li><a href="https://github.com/h-refs">About me</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <main>
+    {{ content }}
+  </main>
+  <footer>
+    <p>© {{ site.time | date: "%Y" }} {{ site.title }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></p>
+  </footer>
+  <script>
+    (function () {
+      var topbar = document.querySelector('.topbar');
+      function onScroll() {
+        topbar.setAttribute('aria-hidden', window.scrollY > 80 ? 'false' : 'true');
+        document.body.classList.toggle('scrolled', window.scrollY > 80);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      document.querySelectorAll('.dropdown').forEach(function (d) {
+        var btn = d.querySelector('button');
+        btn.addEventListener('click', function () {
+          var open = d.classList.toggle('open');
+          btn.setAttribute('aria-expanded', open);
+        });
+        document.addEventListener('click', function (e) {
+          if (!d.contains(e.target)) { d.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
