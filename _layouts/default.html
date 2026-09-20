@@ -66,8 +66,8 @@
             var x = h1Rect.left + (x1 - h1Rect.left) * p;
             var y = h1Rect.top + (y1 - h1Rect.top) * p;
             flying.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')';
-            flying.style.opacity = Math.min(1, p * 1.8);
-            h1.classList.add('hidden-for-flight');
+            flying.style.opacity = Math.min(1, p * 1.4);
+            h1.classList.toggle('hidden-for-flight', p > 0.18);
           } else {
             flying.style.opacity = 0;
             h1.classList.remove('hidden-for-flight');
