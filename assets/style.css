@@ -350,3 +350,11 @@ button {
 
 /* dropdown inside static header too */
 header .dropdown > button { font-size: 0.78rem; }
+
+/* post page */
+.post-meta {
+  margin: 0 0 2.5rem;
+}
+main > h1.post-title {
+  margin-top: 1rem;
+}

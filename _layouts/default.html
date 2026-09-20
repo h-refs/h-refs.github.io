@@ -21,20 +21,11 @@
       </ul>
     </div>
   </div>
+  {% if page.layout != "post" %}
   <header>
     <a class="title" href="{{ '/' | relative_url }}"><h1>{{ site.title }}</h1></a>
-    <nav>
-      <div class="dropdown">
-        <button type="button" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
-        <ul class="dropdown-menu">
-          <li><a href="{{ '/' | relative_url }}">Home</a></li>
-          <li><a href="{{ '/about' | relative_url }}">About</a></li>
-          <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
-          <li><a href="https://github.com/h-refs">About me</a></li>
-        </ul>
-      </div>
-    </nav>
   </header>
+  {% endif %}
   <main>
     {{ content }}
   </main>
