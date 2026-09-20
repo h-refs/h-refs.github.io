@@ -34,7 +34,7 @@
   </footer>
   <script>
     (function () {
-      // post-title flight: mirror the h1 and ease it into the shelf centre
+      // post-title flight: mirror the h1, ease it into the shelf centre
       var h1 = document.querySelector('main > h1');
       var shelf = document.getElementById('shelf-title');
       if (h1 && shelf) {
@@ -42,33 +42,40 @@
         flying.className = 'post-title-flying';
         flying.textContent = h1.textContent;
         document.body.appendChild(flying);
-        shelf.textContent = h1.textContent;
-        function onScroll() {
-          var shelfRect = shelf.getBoundingClientRect();
+        var w0 = 1, gap0 = 1, s1 = 1;
+        function measure() {
           var h1Rect = h1.getBoundingClientRect();
-          var denom = (h1Rect.top + window.scrollY) - (h1Rect.height) - shelfRect.bottom;
-          var progress = 1 - (h1Rect.top - shelfRect.bottom) / Math.max(1, h1Rect.height);
-          progress = Math.min(1, Math.max(0, progress));
-          if (progress > 0.02) {
-            var w0 = h1Rect.width, w1 = flying.offsetWidth || w0;
-            var scale = w0 + (w1 - w0) * progress / w0;
-            var x1 = shelfRect.left + (shelfRect.width - flying.offsetWidth) / 2;
-            var y1 = shelfRect.top + (shelfRect.height - flying.offsetHeight) / 2;
-            var x = h1Rect.left + (x1 - h1Rect.left) * progress;
-            var y = h1Rect.top + (y1 - h1Rect.top) * progress;
+          w0 = h1.offsetWidth;
+          flying.style.width = w0 + 'px';
+          flying.style.fontSize = getComputedStyle(h1).fontSize;
+          s1 = 15.2 / parseFloat(getComputedStyle(h1).fontSize); // shrink to shelf size
+          gap0 = (h1Rect.top + window.scrollY) - shelf.getBoundingClientRect().bottom;
+          gap0 = Math.max(1, gap0);
+        }
+        function onScroll() {
+          var h1Rect = h1.getBoundingClientRect();
+          var shelfRect = shelf.getBoundingClientRect();
+          var gap = h1Rect.top - shelfRect.bottom;
+          var p = Math.min(1, Math.max(0, 1 - gap / gap0));
+          if (p > 0) {
+            var scale = 1 + (s1 - 1) * p;
+            var w = w0 * scale;
+            var hgt = flying.offsetHeight * scale;
+            var x1 = shelfRect.left + (shelfRect.width - w) / 2;
+            var y1 = shelfRect.top + (shelfRect.height - hgt) / 2;
+            var x = h1Rect.left + (x1 - h1Rect.left) * p;
+            var y = h1Rect.top + (y1 - h1Rect.top) * p;
             flying.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')';
-            flying.style.opacity = progress;
-            flying.classList.add('active');
+            flying.style.opacity = Math.min(1, p * 1.8);
             h1.classList.add('hidden-for-flight');
-            shelf.style.visibility = 'hidden';
           } else {
-            flying.classList.remove('active');
+            flying.style.opacity = 0;
             h1.classList.remove('hidden-for-flight');
-            shelf.style.visibility = 'visible';
           }
         }
         window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
+        window.addEventListener('resize', function () { measure(); onScroll(); });
+        measure();
         onScroll();
       }
       document.querySelectorAll('.dropdown').forEach(function (d) {

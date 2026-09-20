@@ -303,12 +303,11 @@ button {
   font-weight: 400;
   line-height: 1.15;
   letter-spacing: -0.04em;
-  white-space: nowrap;
   transform-origin: left top;
   will-change: transform, opacity;
-  display: none;
+  display: block;
+  opacity: 0;
 }
-.post-title-flying.active { display: block; }
 
 /* dropdown */
 .dropdown { position: relative; }
