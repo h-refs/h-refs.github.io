@@ -257,11 +257,11 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.55rem 1.5rem;
+  padding: 0.35rem 1.5rem;
   background: color-mix(in srgb, var(--background-color) 92%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-color);
-  min-height: 3rem;
+  min-height: 2.25rem;
 }
 .topbar .topbar-title {
   color: var(--heading-color);
