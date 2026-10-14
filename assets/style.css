@@ -314,10 +314,11 @@ button {
 .dropdown > button {
   background: none;
   border: 0;
-  padding: 0.35rem 0.2rem;
+  padding: 6px 3px;
   color: var(--muted-color);
-  font: inherit;
-  font-size: 0.78rem;
+  font-family: var(--font-secondary);
+  font-size: 12.5px;
+  line-height: 1.35;
   font-weight: 400;
   letter-spacing: 0.05em;
 }
@@ -326,10 +327,10 @@ button {
 .dropdown-menu {
   position: absolute;
   right: 0;
-  top: calc(100% + 0.4rem);
-  min-width: 9rem;
+  top: calc(100% + 6px);
+  min-width: 150px;
   margin: 0;
-  padding: 0.4rem 0;
+  padding: 6px 0;
   list-style: none;
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -340,15 +341,17 @@ button {
 .dropdown.open .dropdown-menu { display: block; }
 .dropdown-menu a {
   display: block;
-  padding: 0.45rem 1rem;
+  padding: 8px 14px;
   color: var(--text-color);
-  font-size: 0.82rem;
+  font-family: var(--font-secondary);
+  font-size: 13px;
+  line-height: 1.35;
   text-decoration: none;
 }
 .dropdown-menu a:hover { color: var(--link-color); background: rgba(255,255,255,0.04); }
 
 /* dropdown inside static header too */
-.dropdown > button { font-size: 0.78rem; }
+.dropdown > button { font-size: 12.5px; }
 
 /* post page */
 .post-meta {
