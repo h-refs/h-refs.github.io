@@ -348,7 +348,7 @@ button {
 .dropdown-menu a:hover { color: var(--link-color); background: rgba(255,255,255,0.04); }
 
 /* dropdown inside static header too */
-header .dropdown > button { font-size: 0.78rem; }
+.dropdown > button { font-size: 0.78rem; }
 
 /* post page */
 .post-meta {
