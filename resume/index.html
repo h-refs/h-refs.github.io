@@ -61,6 +61,17 @@
   .edu-item .detail .when{color:var(--red); font-size:.8rem; text-transform:uppercase; letter-spacing:.05em;}
   .foot{margin-top:48px; font-size:.85rem; color:var(--mid);}
   .foot a{border-bottom-color:#3a3a3a;}
+  /* TEMP DIAGNOSTIC — remove after gap issue is solved */
+  .identity{outline:2px solid #00ff00;}
+  .identity img{outline:2px solid #ff00ff;}
+  .identity > div{outline:2px solid #00ffff;}
+  header{outline:2px solid #ffff00;}
+  section:first-of-type{outline:2px solid #ff8800;}
+  h2{outline:2px dashed #ffffff;}
+  .contact{outline:2px solid #ff0000;}
+  .contact::after{content:'CONTACT-END'; display:block; color:#ff0000; font-size:10px;}
+  header::after{content:'HEADER-END'; display:block; color:#ffff00; font-size:10px;}
+
   @media print{
     :root{--dark:#fff; --cream:#111; --mid:#555; --red:#b00000;}
     body{padding:0; max-width:none; font-size:12px;}
